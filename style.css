@@ -1,0 +1,80 @@
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+    }
+
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: cadetblue;
+    }
+
+    .container {
+        display: flex;
+        width: 100%;
+        gap: 10px;
+        padding: 10px;
+        max-width: 1050px;
+    }
+
+    section {
+        background-color: white;
+        border-radius: 7px;
+    }
+
+    .tools-board {
+        width: 210px;
+        padding: 15px 2px 0;
+    }
+
+    .tools-board .row {
+        margin: 20px;
+    }
+
+    .row .options {
+        list-style: none;
+        margin: 10px 0 0 5px;
+    }
+
+    .row .options .option {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .option:is(:hover, .active) Img {
+        filter: invert(17%) sepia(90%) saturate(1000%) hue-rotate(900deg) brightness(100%) contrast(100%);
+    }
+
+    .option :where(span, label) {
+        color: rgb(62, 56, 56);
+        padding-left: 10px;
+        cursor: pointer;
+    }
+
+    .option:is(:hover, .active) :where(span, label) {
+        color: #4a9bf7;
+    }
+
+    .option #fill-color {
+        cursor: pointer;
+        height: 14px;
+        width: 14px;
+
+    }
+
+    .option #size-slider {
+        width: 100%;
+        height: 5px;
+        margin-top: 10px;
+    }
+
+    .drawing-board {
+        flex: 1;
+    }
