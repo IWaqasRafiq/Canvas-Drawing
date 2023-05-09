@@ -74,7 +74,78 @@
         height: 5px;
         margin-top: 10px;
     }
-
+    .colors .options{
+        display: flex;
+        justify-content: space-between;
+    }
+    .colors .option{
+        cursor: pointer;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        margin-top: 3px;
+        position: relative;
+    }
+    .colors .option:nth-child(1){
+        background: #fff;
+        border: 1px solid rgb(181, 164, 164);
+    }
+    .colors .option:nth-child(2){
+        background: black;
+    }
+    .colors .option:nth-child(3){
+        background: red;
+    }
+    .colors .option:nth-child(4){
+        background: green;
+    }
+    .colors .option:nth-child(5){
+        background: #006ac8;
+    }
+    .colors .option.selected::before{
+        position: absolute;
+        content: "";
+        top: 50%;
+        left: 50%;
+        height: 12px;
+        width: 12px;
+        background: inherit;
+        border-radius: inherit;
+        border: 2px solid white;
+        transform: translate(-50%, -50%);
+    }
+    .colors .option:first-child.option.selected::before{
+        border-color: #ccc;
+    }
+    .option #color-picker{
+        opacity: 0;
+        cursor: pointer;
+    }
+    .buttons button{
+        width: 100%;
+        color: #fff;
+        border: none;
+        font-size: 0.9rem;
+        outline: none;
+        padding: 11px 0;
+        margin-bottom: 13px;
+        background: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .buttons .clear-canvas{
+        color: #6c757d;
+        border: 1px solid #6c757d;
+        transition: all 0.3 ease;
+    }
+    .clear-canvas:hover{
+        color: #fff;
+        background: #4a84b8;
+    }
+    .buttons .save-img{
+        background: #4a84b8;
+        border: 1px solid #4a84b8;
+    }
     .drawing-board {
         flex: 1;
     }
