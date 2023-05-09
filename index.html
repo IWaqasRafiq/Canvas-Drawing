@@ -15,19 +15,19 @@
             <div class="row">
                 <lebel class="title">Shapes</lebel>
                 <ul class="options">
-                    <li class="option">
+                    <li class="option tool" id="rectangle">
                         <img src="./Img/rectangle.svg" alt="">
                         <span>Rectangle</span>
                     </li>
-                    <li class="option">
+                    <li class="option tool" id="circle">
                         <img src="./Img/circle.svg" alt="">
                         <span>Circle</span>
                     </li>
-                    <li class="option">
+                    <li class="option tool" id="triangle">
                         <img src="./Img/triangle.svg" alt="">
                         <span>Triangle</span>
                     </li>
-                    <li class="option">
+                    <li class="option tool">
                         <input type="checkbox" id="fill-color">
                         <label for="fill-color">Fill Color</label>
                     </li>
@@ -36,11 +36,11 @@
             <div class="row">
                 <lebel class="title">Options</lebel>
                 <ul class="options">
-                    <li class="option">
+                    <li class="option tool" id="brush">
                         <img src="./Img/brush.svg" alt="">
                         <span>Brush</span>
                     </li>
-                    <li class="option">
+                    <li class="option tool" id="eraser">
                         <img src="./Img/eraser.svg" alt="">
                         <span>Eraser</span>
                     </li>
@@ -66,7 +66,9 @@
                 <button class="save-img">Save Image</button>
             </div>
         </section>
-        <section class="drawing-board"></section>
+        <section class="drawing-board">
+            <canvas></canvas>
+        </section>
     </div>
 
 
