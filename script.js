@@ -1,11 +1,18 @@
 const canvas = document.querySelector("canvas")
 toolBtns = document.querySelectorAll(".tool")
+fillcolor = document.querySelector("#fill-color")
+sizeslider = document.querySelector("#size-slider")
+colorBtns = document.querySelectorAll(".colors .option")
+colorPicker = document.querySelector("#color-picker")
+clearCanvas = document.querySelector(".clear-canvas")
+saveImg = document.querySelector(".save-img")
 const ctx = canvas.getContext("2d")
 
-let prevMouseX, prevMouseY,
+let prevMouseX, prevMouseY, snapshot,
 isDrawing = false,
 selectedTool = "brush",
-brushWidth = 5;
+brushWidth = 5,
+selectedColor = "#000"
 
 window.addEventListener("load", () =>{
     canvas.width = canvas.offsetWidth;
@@ -13,7 +20,10 @@ window.addEventListener("load", () =>{
 });
 
 const drawRec = (e) => {
-    ctx.strokeRect(e.offsetX, e.offsetY, prevMouseX - e.offsetX, prevMouseY - e.offsetY);
+    if(!fillcolor.checked){
+       return ctx.strokeRect(e.offsetX, e.offsetY, prevMouseX - e.offsetX, prevMouseY - e.offsetY);
+    }
+    ctx.fillRect(e.offsetX, e.offsetY, prevMouseX - e.offsetX, prevMouseY - e.offsetY);
 }
 
 const startDraw = (e) =>{
@@ -22,12 +32,17 @@ const startDraw = (e) =>{
     prevMouseY = e.offsetY;
     ctx.beginPath();
     ctx.lineWidth = brushWidth;
+    ctx.strokeStyle = selectedColor;
+    ctx.fillStyle = selectedColor;
+    snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
 }
 
 const drawing = (e) => {
     if(!isDrawing) return;
+    ctx.putImageData(snapshot, 0, 0);
 
-    if(selectedTool === "brush"){
+    if(selectedTool === "brush" || selectedTool === "eraser"){
+        ctx.strokeStyle = selectedTool === "eraser" ? "#fff" : selectedColor;
         ctx.lineTo(e.offsetX, e.offsetY);
         ctx.stroke();
     } else if(selectedTool === "rectangle"){
@@ -43,6 +58,33 @@ toolBtns.forEach(btn => {
         console.log(selectedTool);
     })
 });
+
+sizeslider.addEventListener("change", () => brushWidth = sizeslider.value);
+
+colorBtns.forEach(btn =>{
+    btn.addEventListener("click", () =>{
+        document.querySelector(".option", ".selected").classList.remove("selected");
+        btn.classList.add("selected");    
+        selectedColor = window.getComputedStyle(btn).getPropertyValue("background-color");   
+    });
+});
+
+colorPicker.addEventListener("change", () =>{
+    colorPicker.parentElement.style.background = colorPicker.value
+    colorPicker.parentElement.click();
+})
+
+clearCanvas.addEventListener("click", () =>{
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+})
+
+saveImg.addEventListener("click", () => {
+    const link = document.createElement("a");
+    link.download = '$(date.now()).jpg';
+    link.href = canvas.toDataURL();
+    link.click();
+})
 
 canvas.addEventListener("mousedown", startDraw)
 canvas.addEventListener("mousemove", drawing)
