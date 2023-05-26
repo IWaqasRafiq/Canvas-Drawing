@@ -87,11 +87,8 @@ saveImg.addEventListener("click", () => {
 })
 
 canvas.addEventListener("mousedown", startDraw)
-canvas.addEventListener("touchstart", startDraw)
 canvas.addEventListener("mousemove", drawing)
-canvas.addEventListener("touchmove", drawing)
 canvas.addEventListener("mouseup", () => isDrawing = false )
-canvas.addEventListener("touchend", () => isDrawing = false )
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
   }
