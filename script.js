@@ -87,5 +87,21 @@ saveImg.addEventListener("click", () => {
 })
 
 canvas.addEventListener("mousedown", startDraw)
+canvas.addEventListener("touchstart", startDraw)
 canvas.addEventListener("mousemove", drawing)
+canvas.addEventListener("touchmove", drawing)
 canvas.addEventListener("mouseup", () => isDrawing = false )
+canvas.addEventListener("touchend", () => isDrawing = false )
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+  }
+  
+  /* Set the width of the side navigation to 0 */
+  function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+  }
+
+  const checkbox = document.getElementById("checkbox")
+checkbox.addEventListener("change", () => {
+  document.body.classList.toggle("dark")
+})
