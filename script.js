@@ -8,11 +8,11 @@ clearCanvas = document.querySelector(".clear-canvas")
 saveImg = document.querySelector(".save-img")
 const ctx = canvas.getContext("2d")
 
-let prevMouseX, prevMouseY, snapshot,
+let prevMouseX, prevMouseY, snapshot, lastX, lastY,
 isDrawing = false,
 selectedTool = "brush",
 brushWidth = 5,
-selectedColor = "#000"
+selectedColor = "#000";
 
 window.addEventListener("load", () =>{
     canvas.width = canvas.offsetWidth;
@@ -35,6 +35,9 @@ const startDraw = (e) =>{
     ctx.strokeStyle = selectedColor;
     ctx.fillStyle = selectedColor;
     snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const touch = e.touches[0];
+    lastX = touch.pageX - canvas.offsetLeft;
+    lastY = touch.pageY - canvas.offsetTop;
 }
 
 const drawing = (e) => {
@@ -42,9 +45,17 @@ const drawing = (e) => {
     ctx.putImageData(snapshot, 0, 0);
 
     if(selectedTool === "brush" || selectedTool === "eraser"){
+        const touch = e.touches[0];
+        const currentX = touch.pageX - canvas.offsetLeft;
+        const currentY = touch.pageY - canvas.offsetTop;
         ctx.strokeStyle = selectedTool === "eraser" ? "#fff" : selectedColor;
         ctx.lineTo(e.offsetX, e.offsetY);
+        context.moveTo(lastX, lastY);
+        context.lineTo(currentX, currentY);
         ctx.stroke();
+
+        lastX = currentX;
+        lastY = currentY;
     } else if(selectedTool === "rectangle"){
         drawRec(e);
     }
@@ -87,8 +98,11 @@ saveImg.addEventListener("click", () => {
 })
 
 canvas.addEventListener("mousedown", startDraw)
+canvas.addEventListener("touchstart", startDraw)
 canvas.addEventListener("mousemove", drawing)
+canvas.addEventListener("touchmove", drawing)
 canvas.addEventListener("mouseup", () => isDrawing = false )
+canvas.addEventListener("touchend", () => isDrawing = false )
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
   }
