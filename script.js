@@ -103,36 +103,29 @@ checkbox.addEventListener("change", () => {
   document.body.classList.toggle("dark")
 })
 
-canvas.addEventListener("touchstart", handleTouchStart, false);
-canvas.addEventListener("touchmove", handleTouchMove, false);
-canvas.addEventListener("touchend", handleTouchEnd, false);
-
-let lastX, lastY;
-
-function handleTouchStart(event) {
-  event.preventDefault();
-  const touch = event.touches[0];
-  lastX = touch.pageX - canvas.offsetLeft;
-  lastY = touch.pageY - canvas.offsetTop;
-}
-
-function handleTouchMove(event) {
-  event.preventDefault();
-  const touch = event.touches[0];
-  const currentX = touch.pageX - canvas.offsetLeft;
-  const currentY = touch.pageY - canvas.offsetTop;
-
-  context.beginPath();
-  context.moveTo(lastX, lastY);
-  context.lineTo(currentX, currentY);
-  context.stroke();
-
-  lastX = currentX;
-  lastY = currentY;
-}
-
-function handleTouchEnd(event) {
-  event.preventDefault();
-  isDrawing = false
-
-}
+canvas.addEventListener('touchstart', (e) => {
+    isDrawing = true;
+    const touchPos = getTouchPos(canvas, e);
+    ctx.moveTo(touchPos.x, touchPos.y);
+    ctx.beginPath();
+  });
+  
+  canvas.addEventListener('touchmove', (e) => {
+    if (isDrawing) {
+      const touchPos = getTouchPos(canvas, e);
+      ctx.lineTo(touchPos.x, touchPos.y);
+      ctx.stroke();
+    }
+  });
+  
+  canvas.addEventListener('touchend', (e) => {
+    isDrawing = false;
+  });
+  
+  function getTouchPos(canvas, touchEvent) {
+    const rect = canvas.getBoundingClientRect();
+    const touch = touchEvent.touches[0];
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+    return { x, y };
+  }
