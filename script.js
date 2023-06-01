@@ -90,26 +90,40 @@ canvas.addEventListener("mousedown", startDraw)
 canvas.addEventListener("mousemove", drawing)
 canvas.addEventListener("mouseup", () => isDrawing = false )
 
+let prevX = 0;
+let prevY = 0;
 
 canvas.addEventListener("touchstart", (e) => {
-    const touch = e.touches[0];
-    const rect = canvas.getBoundingClientRect();
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-    startDraw(x, y);
-  });
-  
-  canvas.addEventListener("touchmove", (e) => {
-    const touch = e.touches[0];
-    const rect = canvas.getBoundingClientRect();
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-    drawing(x, y);
-  });
-  
-  canvas.addEventListener("touchend", () => {
-    isDrawing = false;
-  });
+  const touch = e.touches[0];
+  const { clientX, clientY } = touch;
+  prevX = clientX;
+  prevY = clientY;
+  isDrawing = true;
+});
+
+canvas.addEventListener("touchmove", (e) => {
+  if (!isDrawing) return;
+  const touch = e.touches[0];
+  const { clientX, clientY } = touch;
+  const currentX = clientX;
+  const currentY = clientY;
+
+  ctx.beginPath();
+  ctx.moveTo(prevX, prevY);
+  ctx.lineTo(currentX, currentY);
+  ctx.stroke();
+
+  prevX = currentX;
+  prevY = currentY;
+});
+
+canvas.addEventListener("touchend", () => {
+  isDrawing = false;
+});
+
+canvas.addEventListener("touchcancel", () => {
+  isDrawing = false;
+});
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
   }
