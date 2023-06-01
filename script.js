@@ -89,6 +89,27 @@ saveImg.addEventListener("click", () => {
 canvas.addEventListener("mousedown", startDraw)
 canvas.addEventListener("mousemove", drawing)
 canvas.addEventListener("mouseup", () => isDrawing = false )
+
+
+canvas.addEventListener("touchstart", (e) => {
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+    startDraw(x, y);
+  });
+  
+  canvas.addEventListener("touchmove", (e) => {
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+    drawing(x, y);
+  });
+  
+  canvas.addEventListener("touchend", () => {
+    isDrawing = false;
+  });
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
   }
@@ -103,29 +124,3 @@ checkbox.addEventListener("change", () => {
   document.body.classList.toggle("dark")
 })
 
-canvas.addEventListener('touchstart', (e) => {
-    isDrawing = true;
-    const touchPos = getTouchPos(canvas, e);
-    ctx.moveTo(touchPos.x, touchPos.y);
-    ctx.beginPath();
-  });
-  
-  canvas.addEventListener('touchmove', (e) => {
-    if (isDrawing) {
-      const touchPos = getTouchPos(canvas, e);
-      ctx.lineTo(touchPos.x, touchPos.y);
-      ctx.stroke();
-    }
-  });
-  
-  canvas.addEventListener('touchend', (e) => {
-    isDrawing = false;
-  });
-  
-  function getTouchPos(canvas, touchEvent) {
-    const rect = canvas.getBoundingClientRect();
-    const touch = touchEvent.touches[0];
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-    return { x, y };
-  }
