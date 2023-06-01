@@ -133,6 +133,6 @@ function handleTouchMove(event) {
 
 function handleTouchEnd(event) {
   event.preventDefault();
-  isDrawing = false,
+  isDrawing = false
 
 }
