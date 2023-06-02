@@ -99,6 +99,10 @@ canvas.addEventListener("touchstart", (e) => {
   prevX = clientX;
   prevY = clientY;
   isDrawing = true;
+  ctx.lineWidth = brushWidth;
+  ctx.strokeStyle = selectedColor;
+  ctx.fillStyle = selectedColor;
+  snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
 });
 
 canvas.addEventListener("touchmove", (e) => {
@@ -109,14 +113,9 @@ canvas.addEventListener("touchmove", (e) => {
   const currentY = clientY;
 
   ctx.beginPath();
-  ctx.lineWidth = brushWidth;
-  ctx.strokeStyle = selectedColor;
-  ctx.fillStyle = selectedColor;
   ctx.moveTo(prevX, prevY);
-  snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-  // ctx.lineTo(currentX, currentY);
-  // ctx.stroke();
+  ctx.lineTo(currentX, currentY);
+  ctx.stroke();
 
   prevX = currentX;
   prevY = currentY;
