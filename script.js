@@ -80,11 +80,11 @@ const getMousePos = (canvas, mouseEvent) => {
   return { x, y };
 };
 
-toolBtns.forEach((btn) => {
+toolBtns.forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelector(".option",".active").classList.remove("active");
+    document.querySelector(".option", ".active").classList.remove("active");
     btn.classList.add("active");
-    selectedTool = btn.id;
+    selectedTool = btn.id
   });
 });
 

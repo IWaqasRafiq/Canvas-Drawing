@@ -232,7 +232,7 @@ section {
     transform: translate(-50%, -50%);
 }
 
-.colors .option:first-child.option.selected::before {
+.colors .option:first-child.selected::before {
     border-color: #ccc;
 }
 
