@@ -113,8 +113,8 @@ canvas.addEventListener("touchmove", (e) => {
   const currentY = clientY;
 
   ctx.beginPath();
-  ctx.moveTo(prevX, prevY);
-  ctx.lineTo(currentX, currentY);
+  // ctx.moveTo(prevX, prevY);
+  ctx.lineTo(e.currentX, e.currentY);
   ctx.stroke();
 
   prevX = currentX;
