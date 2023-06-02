@@ -27,7 +27,25 @@ const drawRec = (x, y) => {
   }
 };
 
-const startDraw = (x, y) => {
+const drawCircle = (x, y) => {
+  ctx.beginPath();
+  let radius = Math.sqrt(Math.pow((prevX - x), 2) + Math.pow((prevY - y), 2));
+  ctx.arc(prevX, prevY, radius, 0, 2 * Math.PI);
+  fillcolor.checked ? ctx.fill() : ctx.stroke();
+}
+
+const drawTriangle = (x, y) => {
+  ctx.beginPath()
+  ctx.moveTo(prevX, prevY);
+  ctx.lineTo(x, y);
+  ctx.lineTo(prevX * 2 - x, y);
+  ctx.closePath()
+  fillcolor.checked ? ctx.fill() : ctx.stroke();
+}
+
+
+
+function startDraw(x, y) {
   isDrawing = true;
   prevX = x;
   prevY = y;
@@ -36,7 +54,7 @@ const startDraw = (x, y) => {
   ctx.strokeStyle = selectedColor;
   ctx.fillStyle = selectedColor;
   snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
-};
+}
 
 const drawing = (x, y) => {
   if (!isDrawing) return;
@@ -48,6 +66,10 @@ const drawing = (x, y) => {
     ctx.stroke();
   } else if (selectedTool === "rectangle") {
     drawRec(x, y);
+  } else if (selectedTool === "circle") {
+    drawCircle(x, y);
+  } else {
+    drawTriangle(x, y)
   }
 };
 
