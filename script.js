@@ -1,166 +1,137 @@
-const canvas = document.querySelector("canvas")
-toolBtns = document.querySelectorAll(".tool")
-fillcolor = document.querySelector("#fill-color")
-sizeslider = document.querySelector("#size-slider")
-colorBtns = document.querySelectorAll(".colors .option")
-colorPicker = document.querySelector("#color-picker")
-clearCanvas = document.querySelector(".clear-canvas")
-saveImg = document.querySelector(".save-img")
-const ctx = canvas.getContext("2d")
+const canvas = document.querySelector("canvas");
+const toolBtns = document.querySelectorAll(".tool");
+const fillcolor = document.querySelector("#fill-color");
+const sizeslider = document.querySelector("#size-slider");
+const colorBtns = document.querySelectorAll(".colors .option");
+const colorPicker = document.querySelector("#color-picker");
+const clearCanvas = document.querySelector(".clear-canvas");
+const saveImg = document.querySelector(".save-img");
+const ctx = canvas.getContext("2d");
 
-let prevMouseX, prevMouseY, snapshot,
-isDrawing = false,
-selectedTool = "brush",
-brushWidth = 5,
-selectedColor = "#000"
+let prevX, prevY, snapshot,
+  isDrawing = false,
+  selectedTool = "brush",
+  brushWidth = 5,
+  selectedColor = "#000";
 
-window.addEventListener("load", () =>{
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+window.addEventListener("load", () => {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
 });
 
-const drawRec = (e) => {
-    if(!fillcolor.checked){
-       return ctx.strokeRect(e.offsetX, e.offsetY, prevMouseX - e.offsetX, prevMouseY - e.offsetY);
-    }
-    ctx.fillRect(e.offsetX, e.offsetY, prevMouseX - e.offsetX, prevMouseY - e.offsetY);
-}
+const drawRec = (x, y) => {
+  if (!fillcolor.checked) {
+    ctx.strokeRect(x, y, prevX - x, prevY - y);
+  } else {
+    ctx.fillRect(x, y, prevX - x, prevY - y);
+  }
+};
 
-const startDraw = (e) =>{
-    isDrawing = true
-    prevMouseX = e.offsetX;
-    prevMouseY = e.offsetY;
-    ctx.beginPath();
-    ctx.lineWidth = brushWidth;
-    ctx.strokeStyle = selectedColor;
-    ctx.fillStyle = selectedColor;
-    snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
-}
+const startDraw = (x, y) => {
+  isDrawing = true;
+  prevX = x;
+  prevY = y;
+  ctx.beginPath();
+  ctx.lineWidth = brushWidth;
+  ctx.strokeStyle = selectedColor;
+  ctx.fillStyle = selectedColor;
+  snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+};
 
-const drawing = (e) => {
-    if(!isDrawing) return;
-    ctx.putImageData(snapshot, 0, 0);
+const drawing = (x, y) => {
+  if (!isDrawing) return;
+  ctx.putImageData(snapshot, 0, 0);
 
-    if(selectedTool === "brush" || selectedTool === "eraser"){
-        ctx.strokeStyle = selectedTool === "eraser" ? "#fff" : selectedColor;
-        ctx.lineTo(e.offsetX, e.offsetY);
-        ctx.stroke();
-    } else if(selectedTool === "rectangle"){
-        drawRec(e);
-    }
-}
+  if (selectedTool === "brush" || selectedTool === "eraser") {
+    ctx.strokeStyle = selectedTool === "eraser" ? "#fff" : selectedColor;
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  } else if (selectedTool === "rectangle") {
+    drawRec(x, y);
+  }
+};
 
-toolBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-        document.querySelector(".option", ".actve").classList.remove("active");
-        btn.classList.add("active");
-        selectedTool = btn.id;
-        console.log(selectedTool);
-    })
+const getMousePos = (canvas, mouseEvent) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = mouseEvent.clientX - rect.left;
+  const y = mouseEvent.clientY - rect.top;
+  return { x, y };
+};
+
+toolBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelector(".option",".active").classList.remove("active");
+    btn.classList.add("active");
+    selectedTool = btn.id;
+  });
 });
 
-sizeslider.addEventListener("change", () => brushWidth = sizeslider.value);
+sizeslider.addEventListener("change", () => (brushWidth = sizeslider.value));
 
-colorBtns.forEach(btn =>{
-    btn.addEventListener("click", () =>{
-        document.querySelector(".option", ".selected").classList.remove("selected");
-        btn.classList.add("selected");    
-        selectedColor = window.getComputedStyle(btn).getPropertyValue("background-color");   
-    });
+colorBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelector(".option",".selected").classList.remove("selected");
+    btn.classList.add("selected");
+    selectedColor = window.getComputedStyle(btn).getPropertyValue("background-color");
+  });
 });
 
-colorPicker.addEventListener("change", () =>{
-    colorPicker.parentElement.style.background = colorPicker.value
-    colorPicker.parentElement.click();
-})
+colorPicker.addEventListener("change", () => {
+  colorPicker.parentElement.style.background = colorPicker.value;
+  colorPicker.parentElement.click();
+});
 
-clearCanvas.addEventListener("click", () =>{
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-})
+clearCanvas.addEventListener("click", () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
 
 saveImg.addEventListener("click", () => {
-    const link = document.createElement("a");
-    link.download = '$(date.now()).jpg';
-    link.href = canvas.toDataURL();
-    link.click();
-})
+  const link = document.createElement("a");
+  link.download = `${Date.now()}.jpg`;
+  link.href = canvas.toDataURL();
+  link.click();
+});
 
-canvas.addEventListener("mousedown", startDraw)
-canvas.addEventListener("mousemove", drawing)
-canvas.addEventListener("mouseup", () => isDrawing = false )
+canvas.addEventListener("mousedown", (e) => {
+  const { x, y } = getMousePos(canvas, e);
+  startDraw(x, y);
+});
 
+canvas.addEventListener("mousemove", (e) => {
+  const { x, y } = getMousePos(canvas, e);
+  drawing(x, y);
+});
 
-canvas.addEventListener('touchstart', function(e) {
-  mousePos = getMousePosition(canvas, e);
+canvas.addEventListener("mouseup", () => (isDrawing = false));
+
+canvas.addEventListener("touchstart", (e) => {
+  e.preventDefault();
   const touch = e.touches[0];
-  const mouseEvent = new MouseEvent('mousedown', {
-    clientX: touch.clientX,
-    clientY: touch.clientY
-  });
-  canvas.dispatchEvent(mouseEvent);
-}, false);
+  const { x, y } = getMousePos(canvas, touch);
+  startDraw(x, y);
+});
 
-canvas.addEventListener('touchmove', function(e) {
+canvas.addEventListener("touchmove", (e) => {
+  e.preventDefault();
   const touch = e.touches[0];
-  const mouseEvent = new MouseEvent('mousemove', {
-    clientX: touch.clientX,
-    clientY: touch.clientY
-  });
-  canvas.dispatchEvent(mouseEvent);
-}, false);
+  const { x, y } = getMousePos(canvas, touch);
+  drawing(x, y);
+});
 
-canvas.addEventListener('touchend', function(e) {
-  const mouseEvent = new MouseEvent('mousemove', {});
-  canvas.dispatchEvent(mouseEvent);
-}, false);
+canvas.addEventListener("touchend", (e) => {
+  e.preventDefault();
+  isDrawing = false;
+});
 
-
-// let prevX = 0;
-// let prevY = 0;
-
-// canvas.addEventListener("touchstart", (e) => {
-//   const touch = e.touches[0];
-//   const { clientX, clientY } = touch;
-//   prevX = clientX;
-//   prevY = clientY;
-//   isDrawing = true;
-// });
-
-// canvas.addEventListener("touchmove", (e) => {
-//   if (!isDrawing) return;
-//   const touch = e.touches[0];
-//   const { clientX, clientY } = touch;
-//   const currentX = clientX;
-//   const currentY = clientY;
-
-//   ctx.beginPath();
-//   ctx.moveTo(prevX, prevY);
-//   ctx.lineTo(currentX, currentY);
-//   ctx.stroke();
-
-//   prevX = currentX;
-//   prevY = currentY;
-// });
-
-// canvas.addEventListener("touchend", () => {
-//   isDrawing = false;
-// });
-
-// canvas.addEventListener("touchcancel", () => {
-//   isDrawing = false;
-// });
 function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-  }
-  
-  /* Set the width of the side navigation to 0 */
-  function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-  }
+  document.getElementById("mySidenav").style.width = "250px";
+}
 
-  const checkbox = document.getElementById("checkbox")
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+const checkbox = document.getElementById("checkbox");
 checkbox.addEventListener("change", () => {
-  document.body.classList.toggle("dark")
-})
-
+  document.body.classList.toggle("dark");
+});
