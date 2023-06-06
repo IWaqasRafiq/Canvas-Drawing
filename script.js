@@ -82,7 +82,7 @@ const getMousePos = (canvas, mouseEvent) => {
 
 toolBtns.forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelector(".option", ".active").classList.remove("active");
+    document.querySelector(".option.active").classList.remove("active");
     btn.classList.add("active");
     selectedTool = btn.id
   });
@@ -92,7 +92,7 @@ sizeslider.addEventListener("change", () => (brushWidth = sizeslider.value));
 
 colorBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
-    document.querySelector(".option",".selected").classList.remove("selected");
+    document.querySelector(".option.selected").classList.remove("selected");
     btn.classList.add("selected");
     selectedColor = window.getComputedStyle(btn).getPropertyValue("background-color");
   });

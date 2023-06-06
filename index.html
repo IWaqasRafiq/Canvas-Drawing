@@ -28,22 +28,22 @@
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <div class="row">
                 <lebel class="title"> <b>Shapes</b> </lebel>
-                <ul class="options">
+                <ul class="options shape">
                     <li class="option tool" id="rectangle">
                         <img src="./Img/rectangle.svg" alt="">
-                        <span>Rectangle</span>
+                        <span class="text">Rectangle</span>
                     </li>
                     <li class="option tool" id="circle">
                         <img src="./Img/circle.svg" alt="">
-                        <span>Circle</span>
+                        <span class="text">Circle</span>
                     </li>
                     <li class="option tool" id="triangle">
                         <img src="./Img/triangle.svg" alt="">
-                        <span>Triangle</span>
+                        <span class="text">Triangle</span>
                     </li>
                     <li class="option tool">
                         <input type="checkbox" id="fill-color">
-                        <label for="fill-color">Fill Color</label>
+                        <label for="fill-color" class="text">Fill Color</label>
                     </li>
                 </ul>
             </div>
@@ -52,11 +52,11 @@
                 <ul class="options">
                     <li class="option active tool" id="brush">
                         <img src="./Img/brush.svg" alt="">
-                        <span>Brush</span>
+                        <span class="text">Brush</span>
                     </li>
                     <li class="option tool" id="eraser">
                         <img src="./Img/eraser.svg" alt="">
-                        <span>Eraser</span>
+                        <span class="text">Eraser</span>
                     </li>
                     <li class="option">
                         <input type="range" id="size-slider" min="1" max="30" value="5">
@@ -76,8 +76,8 @@
                 </ul>
             </div>
             <div class="row buttons">
-                <button class="clear-canvas">Clear Canvas</button>
-                <button class="save-img">Save Image</button>
+                <button class="clear-canvas">Clear<span class="text">Canvas</span></button>
+                <button class="save-img">Save<span class="text">Image</span></button>
             </div>
         </section>
         <section class="drawing-board">
